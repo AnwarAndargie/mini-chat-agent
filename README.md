@@ -1,4 +1,4 @@
-#Mini Chat Agent
+# Mini AI Chat App
 
 A full-stack ai chat application built with React (TypeScript + Vite) and FastAPI (Python).
 
