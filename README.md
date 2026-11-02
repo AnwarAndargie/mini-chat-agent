@@ -1,6 +1,6 @@
-# LangChain React Chatbot
+#Mini Chat Agent
 
-A full-stack chatbot application built with React (TypeScript + Vite) and FastAPI (Python).
+A full-stack ai chat application built with React (TypeScript + Vite) and FastAPI (Python).
 
 ## Project Structure
 
