@@ -2,7 +2,7 @@
 
 # mini-chat-agent
 
-**A tool-using AI chat agent that streams its answers, searches the live web, and pulls Google Trends through its own MCP server.**
+**A tool-using AI chat agent that streams its answers, searches the live web, and pulls Google Trends through a self-hosted MCP server.**
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
@@ -19,7 +19,7 @@
 
 ## What it does
 
-Ask a question and the agent decides whether it needs a tool. It might search the web with Tavily or pull live trending terms from a Google News & Trends **MCP server** that ships in this repo. Then it streams the answer back token by token. Conversations are stored per user in Supabase, with row-level security.
+Ask a question and the agent decides whether it needs a tool. It might search the web with Tavily or pull live trending terms from a self-hosted Google News & Trends **MCP server** (vendored in this repo). Then it streams the answer back token by token. Conversations are stored per user in Supabase, with row-level security.
 
 ```
 You:    What's trending in the UK right now, and why is the top one in the news?
@@ -30,7 +30,7 @@ Agent:  ⚙ google_trends("GB")  ⚙ tavily_web_search("…")
 ## Highlights
 
 - **Tool-calling agent:** a LangChain agent on Gemini that calls a tool only when the question needs one. Its iteration limit and timeout are both configurable.
-- **Own MCP server:** `google-news-trends-mcp` is a FastMCP server over streamable HTTP. It has five tools (news by keyword, location or topic, top news, trending terms), JWT-verified requests (JWKS or public key, issuer, audience, scope), and Playwright-based article extraction.
+- **Self-hosted MCP server:** `google-news-trends-mcp` is [Jesse Manek's](https://github.com/jmanek/google-news-trends-mcp) open-source FastMCP server (MIT), vendored here and run as its own container. It has five tools (news by keyword, location or topic, top news, trending terms) and Playwright-based article extraction. This repo adds JWT verification in front of it (JWKS or public key, issuer, audience, scope), which is enforced when `MCP_JWT_ISSUER` is set.
 - **Streaming over SSE:** `POST /chat/message/stream` emits `chunk`, `tool_start` and `done` events. The UI shows which tool is running while the answer streams in.
 - **Graceful degradation:**
   - A tool is registered only when its backend is configured.
@@ -172,6 +172,10 @@ google-news-trends-mcp/
   security/           JWT verification
 docker-compose.yml
 ```
+
+## Credits
+
+- [`google-news-trends-mcp`](https://github.com/jmanek/google-news-trends-mcp) by Jesse Manek (MIT). See `google-news-trends-mcp/LICENSE`.
 
 ## Roadmap
 
